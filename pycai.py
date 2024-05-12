@@ -6,12 +6,12 @@ from PyCAI2 import PyAsyncCAI2
 owner_id = '5f23e6c7f9edf45042a341303e2a67d9fcf7d96e'
 char = "kn4yt4Es3fmPZqn6-x5uwryrOKNz3UFLEXWoa-hzZtI"
 chat_id = "169bc002-16c4-4c45-91e6-90881392ba79"
-token = "MTIzODUxMTQ0MzI2ODA3OTY5OQ.GIVfY9.20YTA_vI_9FfV89xASZvOGv2l6KgLz1jEfJ_-I"
+token = ""
 client = PyAsyncCAI2(owner_id)
 
 # Discord bot configuration
 bot = commands.Bot(command_prefix="f!", intents=nextcord.Intents.all())
-token_discord = "MTIzODUxMTQ0MzI2ODA3OTY5OQ.GIVfY9.20YTA_vI_9FfV89xASZvOGv2l6KgLz1jEfJ_-I"
+token_discord = ""
 
 # PyCAI enabled flag
 pycai_enabled = True
