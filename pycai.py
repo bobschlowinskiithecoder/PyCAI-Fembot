@@ -4,7 +4,8 @@ from nextcord.ext import commands
 from PyCAI2 import PyAsyncCAI2
 from firebase_admin import credentials, firestore
 
-prefix = "f!"
+# Set your bot's prefix
+prefix = "/"
 
 # Create a bot instance with a command prefix
 intents = nextcord.Intents.all()
@@ -34,6 +35,27 @@ async def get_allowed_roles():
         print(f"Error fetching allowed roles: {e}")
 
     return allowed_roles
+
+async def get_channel_id(command_name, channel_name):
+    """Get the channel ID from Firestore."""
+    channel_ref = db.collection("channel_ids").document(command_name)
+    try:
+        snapshot = channel_ref.get()
+        if snapshot.exists:
+            return snapshot.to_dict().get(channel_name)
+        else:
+            return None
+    except Exception as e:
+        print(f"Error getting channel ID: {e}")
+        return None
+
+async def set_channel_id(command_name, channel_name, channel_id):
+    """Set the channel ID in Firestore."""
+    channel_ref = db.collection("channel_ids").document(command_name)
+    try:
+        channel_ref.set({channel_name: channel_id})
+    except Exception as e:
+        print(f"Error setting channel ID: {e}")
 
 # Function to check the user for permissions to run the command
 async def permission_check(ctx):
@@ -84,8 +106,9 @@ def get_cai_chat_id():
 owner_id = get_cai_owner_id()
 char = get_cai_char_id()
 chat_id = get_cai_chat_id()
-
 client = PyAsyncCAI2(owner_id)
+
+public_channel_id = 1238511476302545017
 
 # Function to start the bot
 def run_bot():
@@ -106,53 +129,31 @@ async def on_ready():
 # PyCAI enabled flag
 pycai_enabled = True
 
-# Allowed channel ID
-allowed_channel_id = 1238511476302545017 #CHANGE ME BACK OR NO FEMBOYS!! :3
-
 # Add event for PyCAI2
 @bot.event
 async def on_message(message):
-    global pycai_enabled
+    if message.author == bot.user:
+        return
 
-
-    if message.channel.id == allowed_channel_id:
-        print(f"{message.author.name}: {message.content}")
-        if message.author == bot.user:
-            return
-
-        # Check if the message contains commands to disable or enable the bot
-        if 'f!disable' in message.content or 'f!enable' in message.content:
-            await bot.process_commands(message)
-        # Check if the message contains the command to create a new chat
-        elif 'f!rtv' in message.content:
-            await bot.process_commands(message)
-        # Check if the message contains the command to close the channel
-        elif 'f!close' in message.content:
-            await bot.process_commands(message)
-        # Process normal messages if the bot is enabled
-        elif pycai_enabled:
-            await process_message(message)
-        # Ignore messages if the bot is disabled
-        else:
-            return
-
-# Function to handle messages
-async def process_message(message):
     username = message.author.name
     response = await pycai(f"{username}: {message.content}")
 
-    if any(bad_word in response for bad_word in ["@everyone", "@here", "<@&1182758208922714133>"]):
-        await message.channel.send("I'm sorry, I'm not allowed to mention everyone, here")
+    if message.channel.id == public_channel_id:
+        if any(bad_word in response for bad_word in ["@everyone", "@here", "<@&1182758208922714133>"]):
+            await message.channel.send("I'm sorry, I'm not allowed to mention everyone, here")
+            return
+
+        await message.channel.send(response)
         return
-    
-    await message.channel.send(response)
 
 # Function to interact with PyCAI2
 async def pycai(message):
+
     print("[PyCAI2] STARTING TO PROCESS MESSAGE")
+    print("MESSAGE:", message)
     
-    async with client.connect(owner_id) as chat2:
-        r = await chat2.send_message(char, message, chat_id)
+    async with client.connect(owner_id) as chat3:
+        r = await chat3.send_message(char, message, chat_id)
 
     if any(bad_word in r for bad_word in ["@everyone", "@here", "<@&1182758208922714133>"]):
         return "I'm sorry, I'm not allowed to mention everyone, here"
@@ -161,7 +162,7 @@ async def pycai(message):
     return r
 
 # Command to disable PyCAI
-@bot.command()
+@bot.slash_command(description="add later")
 async def disable(ctx):
     global pycai_enabled
     if await permission_check(ctx):
@@ -174,7 +175,7 @@ async def disable(ctx):
         return
 
 # Command to enable PyCAI
-@bot.command()
+@bot.slash_command(description="add later")
 async def enable(ctx):
     global pycai_enabled
     if await permission_check(ctx):
@@ -182,12 +183,19 @@ async def enable(ctx):
         await ctx.send("PyCAI has been enabled.")
     else:
         return
-    
+
 # Command to reset chat
-@bot.command()
+@bot.slash_command(description="add later")
 async def rtv(ctx):
-    async with client.connect(owner_id) as chat2:
-        await chat2.new_chat({get_cai_char_id}, with_greeting=False)
+    if await permission_check(ctx):
+        async with client.connect(owner_id) as chat2:
+            await chat2.new_chat({get_cai_char_id}, with_greeting=False)
+
+# Command to reset chat
+@bot.slash_command(description="add later")
+async def test(ctx):
+    if await permission_check(ctx):
+        await ctx.send("test success")
 
 # Run the bot
 if __name__ == "__main__":
