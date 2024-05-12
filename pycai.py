@@ -3,7 +3,6 @@ import firebase_admin
 from nextcord.ext import commands
 from PyCAI2 import PyAsyncCAI2
 from firebase_admin import credentials, firestore
-from enum import Enum
 
 prefix = "f!"
 
@@ -160,13 +159,6 @@ async def pycai(message):
 
     print("[PyCAI2] Bot Message: ", r)
     return r
-
-async def set_setting(setting_name, setting_value):
-    setting_ref = db.collection("command_configuration").document(setting_name)
-    if isinstance(setting_value, bool):
-        setting_ref.set({"value": setting_value})
-    else:
-        setting_ref.set({"value": setting_value})
 
 # Command to disable PyCAI
 @bot.command()
