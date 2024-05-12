@@ -2,6 +2,6 @@
  bruh you know exactly what this is
 
 
- ### TOKEN
- MTIzODUxMTQ0MzI2ODA3OTY5OQ.GBquiY.iYaz0CeoFtMRq0a7zBv8keyIfgqzKBhrpqGQ98
+ ### TOKEN encoded in fucking base64 because safety jim is a fucking twat
+TVRJek9EVXhNVFEwTXpJMk9EQTNPVFk1T1EuR2JUcU5hLnc4NFAySkNWRHR2YUdQcFRZTEk5MHRROERDN0ctQnRFbjExcE5n
  pls dont remove this time :3
