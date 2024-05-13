@@ -1,6 +1,6 @@
 import nextcord
-from nextcord.ext import commands
 import firebase_admin
+from nextcord.ext import commands
 from PyCAI2 import PyAsyncCAI2
 from firebase_admin import credentials, firestore
 

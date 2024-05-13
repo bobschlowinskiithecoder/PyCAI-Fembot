@@ -161,7 +161,7 @@ async def rtv(ctx):
             await chat2.new_chat({get_cai_char_id}, with_greeting=False)
 
 # Command to reset chat
-@bot.slash_command(description="Command to test the permissiomcheck function")
+@bot.slash_command(description="Command to test the permissioncheck function")
 async def permissiontest(ctx):
     if await permission_check(ctx):
         await ctx.send("test success")
