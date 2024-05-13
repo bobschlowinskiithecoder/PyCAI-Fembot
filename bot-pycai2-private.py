@@ -180,7 +180,6 @@ async def get_cai_char_id():
         print(f"Error fetching character ID: {e}")
         return None
 
-
 # Function to fetch c.ai API key from Firestore
 def get_cai_chat_id():
     doc_ref = db.collection("secrets").document("c.ai_chatid")
