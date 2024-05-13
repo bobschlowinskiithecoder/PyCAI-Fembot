@@ -242,7 +242,6 @@ async def react_to_message():
     else:
         print("Channel not found")
 
-
 # Event: When a reaction is added to a message
 @bot.event
 async def on_reaction_add(reaction, user):

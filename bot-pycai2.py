@@ -154,7 +154,7 @@ async def on_message(message):
         return
 
 # Command to reset chat
-@bot.slash_command(description="")
+@bot.slash_command(description="idfk")
 async def rtv(ctx):
     if await permission_check(ctx):
         async with client.connect(owner_id) as chat2:
