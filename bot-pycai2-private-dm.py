@@ -139,14 +139,16 @@ async def start_new_chat(channel_id):
 
         # Check if there are any available character IDs
         if available_ids:
-            # Select the first available character ID
-            char_id = available_ids[0]
+            for char_id in available_ids:
+                # Check if the character ID is already used
+                if not await is_character_id_used(char_id):
+                    # Mark the selected character ID as used
+                    await set_character_id_used(char_id, True)
 
-            # Mark the selected character ID as used
-            await set_character_id_used(char_id, True)
-
-            # Start a new chat using the selected character ID and the DM channel ID
-            await start_new_chat(char_id, channel_id)
+                    # Start a new chat using the selected character ID and the DM channel ID
+                    await start_new_chat(char_id, channel_id)
+                    return  # Exit the loop after starting a chat
+            print("No available character IDs.")
         else:
             print("No available character IDs.")
     except Exception as e:
