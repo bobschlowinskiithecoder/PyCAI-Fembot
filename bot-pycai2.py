@@ -30,7 +30,7 @@ def get_bot_token():
 def get_cai_owner_id():
     doc_ref = db.collection("secrets").document("c.ai_ownerid")
     doc = doc_ref.get()
-    return doc.to_dict()["id"]
+    return doc.to_dict()["ryzenid"]
 
 # Function to fetch c.ai API key from Firestore
 def get_cai_char_id():
@@ -104,11 +104,11 @@ async def pycai(message):
     print("[PyCAI2] STARTING TO PROCESS MESSAGE")
     print("MESSAGE:", message)
     
-    async with client.connect(owner_id) as chat3:
-        r = await chat3.send_message(char, message, chat_id)
+    async with client.connect(owner_id) as chat2:
+        r = await chat2.send_message(char, message, chat_id)
 
-    if any(bad_word in r for bad_word in ["@everyone", "@here", "<@&1182758208922714133>"]):
-        return "I'm sorry, I'm not allowed to mention everyone, here"
+    if any(bad_word in r for bad_word in ["@"]):
+        return "I'm sorry, I'm not allowed to mention roles"
 
     print("[PyCAI2] Bot Message: ", r)
     return r
@@ -146,8 +146,8 @@ async def on_message(message):
     response = await pycai(f"{username}: {message.content}")
 
     if message.channel.id == public_channel_id:
-        if any(bad_word in response for bad_word in ["@everyone", "@here", "<@&1182758208922714133>"]):
-            await message.channel.send("I'm sorry, I'm not allowed to mention everyone, here")
+        if any(bad_word in response for bad_word in ["@"]):
+            await message.channel.send("I'm sorry, I'm not allowed to mention roles")
             return
 
         await message.channel.send(response)
