@@ -118,7 +118,7 @@ owner_id = get_cai_owner_id()
 char = get_cai_char_id()
 chat_id = get_cai_chat_id()
 client = PyAsyncCAI2(owner_id)
-public_channel_id = 1238076851478462556
+public_channel_id = 1243599282456756404
 
 # Function to start the bot
 def run_bot():
